@@ -33,7 +33,8 @@ import javax.swing.border.AbstractBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-public class MainFrame extends JFrame {
+public class MainFrame extends JFrame
+{
     // UI Components
     private JTextField nameField;
     private JTextField phoneField;
@@ -51,7 +52,8 @@ public class MainFrame extends JFrame {
     // Controller
     private MemberActionListener actionListeners;
 
-    public MainFrame() {
+    public MainFrame()
+    {
         setTitle("Gym Member Management");
         setSize(1000, 700);
         setMinimumSize(new Dimension(800, 600));
@@ -98,7 +100,8 @@ public class MainFrame extends JFrame {
         actionListeners.initializeTable();
     }
 
-    private JPanel createHeaderPanel() {
+    private JPanel createHeaderPanel()
+    {
         JPanel headerPanel = new JPanel(new BorderLayout(10, 0));
         headerPanel.setOpaque(false);
 
@@ -123,7 +126,8 @@ public class MainFrame extends JFrame {
         return headerPanel;
     }
 
-    private GlassPanel createFormPanel() {
+    private GlassPanel createFormPanel()
+    {
         GlassPanel formPanel = new GlassPanel();
         formPanel.setLayout(new BorderLayout(0, 10));
 
@@ -237,7 +241,8 @@ public class MainFrame extends JFrame {
         return formPanel;
     }
 
-    private GlassPanel createTablePanel() {
+    private GlassPanel createTablePanel()
+    {
         GlassPanel tablePanel = new GlassPanel();
         tablePanel.setLayout(new BorderLayout(0, 10));
 
@@ -264,9 +269,11 @@ public class MainFrame extends JFrame {
 
         // Table
         String[] columnNames = {"ID", "Name", "Phone", "Age", "Gender", "Address", "Actions"};
-        DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0)
+        {
             @Override
-            public boolean isCellEditable(int row, int column) {
+            public boolean isCellEditable(int row, int column)
+            {
                 return column == 6; // Only actions column is editable
             }
         };
@@ -305,14 +312,18 @@ public class MainFrame extends JFrame {
     }
 
     // Create a method to style text fields
-    private JTextField createStyledTextField(String placeholder) {
-        JTextField textField = new JTextField() {
+    private JTextField createStyledTextField(String placeholder)
+    {
+        JTextField textField = new JTextField()
+        {
             @Override
-            protected void paintComponent(Graphics g) {
+            protected void paintComponent(Graphics g)
+            {
                 super.paintComponent(g);
 
                 // Add placeholder text if empty
-                if (getText().isEmpty() && !hasFocus()) {
+                if (getText().isEmpty() && !hasFocus())
+                {
                     Graphics2D g2 = (Graphics2D) g.create();
                     g2.setColor(new Color(150, 150, 150));
                     g2.setFont(FontManager.getPrimaryRegular(FontManager.SMALL));
@@ -333,17 +344,20 @@ public class MainFrame extends JFrame {
     }
 
     // Custom rounded border class
-    class RoundedBorder extends AbstractBorder {
+    class RoundedBorder extends AbstractBorder
+    {
         private int radius;
         private Color color;
 
-        public RoundedBorder(int radius, Color color) {
+        public RoundedBorder(int radius, Color color)
+        {
             this.radius = radius;
             this.color = color;
         }
 
         @Override
-        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height)
+        {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.setColor(color);
@@ -352,12 +366,14 @@ public class MainFrame extends JFrame {
         }
 
         @Override
-        public Insets getBorderInsets(Component c) {
-            return new Insets(radius/2, radius/2, radius/2, radius/2);
+        public Insets getBorderInsets(Component c)
+        {
+            return new Insets(radius / 2, radius / 2, radius / 2, radius / 2);
         }
     }
 
-    private JButton createStyledButton(String text, Icon icon, Color bgColor, Color fgColor) {
+    private JButton createStyledButton(String text, Icon icon, Color bgColor, Color fgColor)
+    {
         JButton button = new JButton(text, icon);
         button.setBackground(bgColor);
         button.setForeground(fgColor);
@@ -386,11 +402,13 @@ public class MainFrame extends JFrame {
     }
 
     // Custom button renderer for table
-    private class ButtonRenderer extends JPanel implements javax.swing.table.TableCellRenderer {
+    private class ButtonRenderer extends JPanel implements javax.swing.table.TableCellRenderer
+    {
         private JButton editButton;
         private JButton deleteButton;
 
-        public ButtonRenderer() {
+        public ButtonRenderer()
+        {
             setLayout(new FlowLayout(FlowLayout.CENTER, 5, 0));
             setOpaque(true);
 
@@ -412,20 +430,23 @@ public class MainFrame extends JFrame {
 
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-                boolean hasFocus, int row, int column) {
+                boolean hasFocus, int row, int column)
+        {
             setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
             return this;
         }
     }
 
     // Custom button editor for table
-    private class ButtonEditor extends DefaultCellEditor {
+    private class ButtonEditor extends DefaultCellEditor
+    {
         private JPanel panel;
         private JButton editButton;
         private JButton deleteButton;
         private int currentRow;
 
-        public ButtonEditor() {
+        public ButtonEditor()
+        {
             super(new JTextField());
 
             panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
@@ -455,7 +476,8 @@ public class MainFrame extends JFrame {
                     "Are you sure you want to delete this member?",
                     "Confirm Deletion", JOptionPane.YES_NO_OPTION);
 
-                if (confirm == JOptionPane.YES_OPTION) {
+                if (confirm == JOptionPane.YES_OPTION)
+                {
                     actionListeners.getDAO().deleteMember(memberId);
                     actionListeners.initializeTable();
                 }
@@ -468,60 +490,73 @@ public class MainFrame extends JFrame {
 
         @Override
         public Component getTableCellEditorComponent(JTable table, Object value,
-                boolean isSelected, int row, int column) {
+                boolean isSelected, int row, int column)
+        {
             currentRow = row;
             panel.setBackground(table.getSelectionBackground());
             return panel;
         }
 
         @Override
-        public Object getCellEditorValue() {
+        public Object getCellEditorValue()
+        {
             return "";
         }
     }
 
-    public void updateStatusLabel(int count) {
+    public void updateStatusLabel(int count)
+    {
         statusLabel.setText("Showing " + count + " members");
     }
 
     // Getters for UI components
-    public JTextField getNameField() {
+    public JTextField getNameField()
+    {
         return nameField;
     }
 
-    public JTextField getPhoneField() {
+    public JTextField getPhoneField()
+    {
         return phoneField;
     }
 
-    public JTextField getAgeField() {
+    public JTextField getAgeField()
+    {
         return ageField;
     }
 
-    public JComboBox<String> getGenderComboBox() {
+    public JComboBox<String> getGenderComboBox()
+    {
         return genderComboBox;
     }
 
-    public JTextArea getAddressField() {
+    public JTextArea getAddressField()
+    {
         return addressField;
     }
 
-    public JButton getAddButton() {
+    public JButton getAddButton()
+    {
         return addButton;
     }
 
-    public JButton getUpdateButton() {
+    public JButton getUpdateButton()
+    {
         return updateButton;
     }
 
-    public JButton getDeleteButton() {
+    public JButton getDeleteButton()
+    {
         return deleteButton;
     }
 
-    public JTextField getSearchField() {
+    public JTextField getSearchField()
+    {
         return searchField;
     }
 
-    public JTable getMemberTable() {
+    public JTable getMemberTable()
+    {
         return memberTable;
     }
 }
