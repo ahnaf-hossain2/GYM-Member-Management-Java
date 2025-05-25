@@ -5,24 +5,30 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-public class MemberActionListener {
+public class MemberActionListener
+{
     private final MainFrame mainFrame;
     private final MemberDAO memberDAO;
     private int currentMemberId = -1;
 
-    public MemberActionListener(MainFrame mainFrame) {
+    public MemberActionListener(MainFrame mainFrame)
+    {
         this.mainFrame = mainFrame;
         this.memberDAO = new MemberDAO();
     }
 
-    public MemberDAO getDAO() {
+    public MemberDAO getDAO()
+    {
         return memberDAO;
     }
 
-    public class AddButtonListener implements ActionListener {
+    public class AddButtonListener implements ActionListener
+    {
         @Override
-        public void actionPerformed(ActionEvent e) {
-            if (!validateInputs()) {
+        public void actionPerformed(ActionEvent e)
+        {
+            if (!validateInputs())
+            {
                 return;
             }
 
@@ -35,10 +41,13 @@ public class MemberActionListener {
         }
     }
 
-    public class UpdateButtonListener implements ActionListener {
+    public class UpdateButtonListener implements ActionListener
+    {
         @Override
-        public void actionPerformed(ActionEvent e) {
-            if (currentMemberId == -1 || !validateInputs()) {
+        public void actionPerformed(ActionEvent e)
+        {
+            if (currentMemberId == -1 || !validateInputs())
+            {
                 return;
             }
 
@@ -52,10 +61,13 @@ public class MemberActionListener {
         }
     }
 
-    public class DeleteButtonListener implements ActionListener {
+    public class DeleteButtonListener implements ActionListener
+    {
         @Override
-        public void actionPerformed(ActionEvent e) {
-            if (currentMemberId == -1) {
+        public void actionPerformed(ActionEvent e)
+        {
+            if (currentMemberId == -1)
+            {
                 showError("Please select a member to delete.");
                 return;
             }
@@ -64,7 +76,8 @@ public class MemberActionListener {
                     "Are you sure you want to delete this member?",
                     "Confirm Deletion", JOptionPane.YES_NO_OPTION);
 
-            if (confirm == JOptionPane.YES_OPTION) {
+            if (confirm == JOptionPane.YES_OPTION)
+            {
                 memberDAO.deleteMember(currentMemberId);
                 showNotification("Member deleted successfully!");
                 clearFields();
@@ -73,43 +86,53 @@ public class MemberActionListener {
         }
     }
 
-    public class ClearButtonListener implements ActionListener {
+    public class ClearButtonListener implements ActionListener
+    {
         @Override
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent e)
+        {
             clearFields();
         }
     }
 
-    public class SearchListener implements ActionListener {
+    public class SearchListener implements ActionListener
+    {
         @Override
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent e)
+        {
             String query = mainFrame.getSearchField().getText().trim();
             List<Member> results = memberDAO.searchMembers(query);
             updateTable(results);
         }
     }
 
-    public class TableSelectionListener implements ActionListener {
+    public class TableSelectionListener implements ActionListener
+    {
         private int memberId;
 
-        public TableSelectionListener(int memberId) {
+        public TableSelectionListener(int memberId)
+        {
             this.memberId = memberId;
         }
 
         @Override
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent e)
+        {
             Member member = memberDAO.getMember(memberId);
-            if (member != null) {
+            if (member != null)
+            {
                 populateFields(member);
             }
         }
     }
 
-    public void initializeTable() {
+    public void initializeTable()
+    {
         updateTable(memberDAO.getAllMembers());
     }
 
-    private Member createMemberFromInputs() {
+    private Member createMemberFromInputs()
+    {
         String name = mainFrame.getNameField().getText().trim();
         String phone = mainFrame.getPhoneField().getText().trim();
         int age = Integer.parseInt(mainFrame.getAgeField().getText().trim());
@@ -119,43 +142,53 @@ public class MemberActionListener {
         return new Member(0, name, phone, age, gender, address);
     }
 
-    private boolean validateInputs() {
+    private boolean validateInputs()
+    {
         String name = mainFrame.getNameField().getText().trim();
-        if (name.isEmpty()) {
+        if (name.isEmpty())
+        {
             showError("Please enter a name.");
             return false;
         }
 
         String phone = mainFrame.getPhoneField().getText().trim();
-        if (phone.isEmpty()) {
+        if (phone.isEmpty())
+        {
             showError("Please enter a phone number.");
             return false;
         }
 
         String ageText = mainFrame.getAgeField().getText().trim();
-        if (ageText.isEmpty()) {
+        if (ageText.isEmpty())
+        {
             showError("Please enter an age.");
             return false;
         }
 
-        try {
+        try
+        {
             int age = Integer.parseInt(ageText);
             if (age <= 0) {
                 showError("Please enter a valid age.");
                 return false;
             }
-        } catch (NumberFormatException e) {
+        }
+
+        catch (NumberFormatException e)
+        {
             showError("Age must be a number.");
             return false;
         }
 
-        if (mainFrame.getGenderComboBox().getSelectedIndex() == 0) {
+        if (mainFrame.getGenderComboBox().getSelectedIndex() == 0)
+        {
             showError("Please select a gender.");
             return false;
         }
 
         String address = mainFrame.getAddressField().getText().trim();
-        if (address.isEmpty()) {
+        if (address.isEmpty())
+        {
             showError("Please enter an address.");
             return false;
         }
@@ -163,7 +196,8 @@ public class MemberActionListener {
         return true;
     }
 
-    public void populateFields(Member member) {
+    public void populateFields(Member member)
+    {
         currentMemberId = member.getId();
         mainFrame.getNameField().setText(member.getName());
         mainFrame.getPhoneField().setText(member.getPhone());
@@ -177,7 +211,8 @@ public class MemberActionListener {
         mainFrame.getDeleteButton().setEnabled(true);
     }
 
-    private void clearFields() {
+    private void clearFields()
+    {
         currentMemberId = -1;
         mainFrame.getNameField().setText("");
         mainFrame.getPhoneField().setText("");
@@ -191,7 +226,8 @@ public class MemberActionListener {
         mainFrame.getDeleteButton().setEnabled(false);
     }
 
-    private void updateTable(List<Member> members) {
+    private void updateTable(List<Member> members)
+    {
         DefaultTableModel model = (DefaultTableModel) mainFrame.getMemberTable().getModel();
         model.setRowCount(0); // Clear table
 
@@ -209,11 +245,13 @@ public class MemberActionListener {
         mainFrame.updateStatusLabel(members.size());
     }
 
-    private void showError(String message) {
+    private void showError(String message)
+    {
         JOptionPane.showMessageDialog(mainFrame, message, "Input Error", JOptionPane.ERROR_MESSAGE);
     }
 
-    private void showNotification(String message) {
+    private void showNotification(String message)
+    {
         JOptionPane.showMessageDialog(mainFrame, message, "Success", JOptionPane.INFORMATION_MESSAGE);
     }
 }
