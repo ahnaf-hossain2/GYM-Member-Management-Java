@@ -17,7 +17,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.DefaultCellEditor;
 import javax.swing.Icon;
-import javax.swing.JButton;  // Add this line
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -35,7 +35,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class MainFrame extends JFrame
 {
-    // UI Components
+    // all design components
     private JTextField nameField;
     private JTextField phoneField;
     private JTextField ageField;
@@ -49,7 +49,6 @@ public class MainFrame extends JFrame
     private JTable memberTable;
     private JLabel statusLabel;
 
-    // Controller
     private MemberActionListener actionListeners;
 
     public MainFrame()
@@ -58,45 +57,38 @@ public class MainFrame extends JFrame
         setSize(1000, 700);
         setMinimumSize(new Dimension(800, 600));
 
-        // Add this line to set the frame icon
-        setIconImage(IconManager.getIcon(IconManager.APP_ICON, 32, 32).getImage());
+        setIconImage(IconManager.getIcon(IconManager.APP_ICON, 32, 32).getImage()); // this sets the frame icon
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // Initialize the main content panel with background image
         BackgroundPanel backgroundPanel = new BackgroundPanel("resources/background.jpg");
         backgroundPanel.setLayout(new BorderLayout(10, 10));
         backgroundPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
         setContentPane(backgroundPanel);
 
-        // Initialize action listeners
         actionListeners = new MemberActionListener(this);
 
-        // Create and add components
         JPanel headerPanel = createHeaderPanel();
         backgroundPanel.add(headerPanel, BorderLayout.NORTH);
 
-        // Create a split pane for form and table
         JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-        splitPane.setDividerLocation(350); // Adjust this value to control division
-        splitPane.setResizeWeight(0.5); // Equal resize behavior
+        splitPane.setDividerLocation(350);
+        splitPane.setResizeWeight(0.5);
         splitPane.setDividerSize(5);
-        splitPane.setBorder(null); // Remove border
+        splitPane.setBorder(null);
         splitPane.setOpaque(false);
 
         GlassPanel formPanel = createFormPanel();
         splitPane.setTopComponent(formPanel);
 
         GlassPanel tablePanel = createTablePanel();
-        // Add vertical space at the top of the table panel
+
         tablePanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
         splitPane.setBottomComponent(tablePanel);
 
-        // Add split pane to background panel
         backgroundPanel.add(splitPane, BorderLayout.CENTER);
 
-        // Initialize the table data
         actionListeners.initializeTable();
     }
 
@@ -105,7 +97,6 @@ public class MainFrame extends JFrame
         JPanel headerPanel = new JPanel(new BorderLayout(10, 0));
         headerPanel.setOpaque(false);
 
-        // Left side - App title with icon
         JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
         titlePanel.setOpaque(false);
 
@@ -119,7 +110,6 @@ public class MainFrame extends JFrame
 
         headerPanel.add(titlePanel, BorderLayout.WEST);
 
-        // Right side - Profile icon
         JLabel profileLabel = new JLabel(IconManager.getIcon(IconManager.PROFILE_ICON, 40, 40));
         headerPanel.add(profileLabel, BorderLayout.EAST);
 
@@ -131,21 +121,18 @@ public class MainFrame extends JFrame
         GlassPanel formPanel = new GlassPanel();
         formPanel.setLayout(new BorderLayout(0, 10));
 
-        // Form title
         JLabel formTitleLabel = new JLabel("Member Information");
         formTitleLabel.setFont(FontManager.getPrimaryBold(FontManager.LARGE));
         formTitleLabel.setBorder(new EmptyBorder(0, 0, 10, 0));
         formPanel.add(formTitleLabel, BorderLayout.NORTH);
 
-        // Main form panel with proper spacing
         JPanel mainFormPanel = new JPanel();
         mainFormPanel.setOpaque(false);
         mainFormPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(5, 5, 5, 5); // Add some padding
+        gbc.insets = new Insets(5, 5, 5, 5);
 
-        // Member Name (left column)
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 0.5;
@@ -157,7 +144,6 @@ public class MainFrame extends JFrame
         namePanel.add(nameField, BorderLayout.CENTER);
         mainFormPanel.add(namePanel, gbc);
 
-        // Phone Number (right column)
         gbc.gridx = 1;
         gbc.gridy = 0;
         JPanel phonePanel = new JPanel(new BorderLayout(0, 5));
@@ -168,7 +154,6 @@ public class MainFrame extends JFrame
         phonePanel.add(phoneField, BorderLayout.CENTER);
         mainFormPanel.add(phonePanel, gbc);
 
-        // Age (left column)
         gbc.gridx = 0;
         gbc.gridy = 1;
         JPanel agePanel = new JPanel(new BorderLayout(0, 5));
@@ -179,7 +164,6 @@ public class MainFrame extends JFrame
         agePanel.add(ageField, BorderLayout.CENTER);
         mainFormPanel.add(agePanel, gbc);
 
-        // Gender (right column)
         gbc.gridx = 1;
         gbc.gridy = 1;
         JPanel genderPanel = new JPanel(new BorderLayout(0, 5));
@@ -191,10 +175,9 @@ public class MainFrame extends JFrame
         genderPanel.add(genderComboBox, BorderLayout.CENTER);
         mainFormPanel.add(genderPanel, gbc);
 
-        // Address (full width)
         gbc.gridx = 0;
         gbc.gridy = 2;
-        gbc.gridwidth = 2; // Span across both columns
+        gbc.gridwidth = 2;
         JPanel addressPanel = new JPanel(new BorderLayout(0, 5));
         addressPanel.setOpaque(false);
         JLabel addressLabel = new JLabel("Address");
@@ -207,14 +190,12 @@ public class MainFrame extends JFrame
         addressPanel.add(addressScrollPane, BorderLayout.CENTER);
         mainFormPanel.add(addressPanel, gbc);
 
-        // Add some vertical spacing before buttons
         gbc.gridy = 3;
-        gbc.weighty = 0.1;  // Reduced weight
-        mainFormPanel.add(Box.createVerticalStrut(10), gbc); // Smaller strut
+        gbc.weighty = 0.1;
+        mainFormPanel.add(Box.createVerticalStrut(10), gbc);
 
         formPanel.add(mainFormPanel, BorderLayout.CENTER);
 
-        // Buttons panel at the bottom
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
         buttonsPanel.setOpaque(false);
 
@@ -246,7 +227,6 @@ public class MainFrame extends JFrame
         GlassPanel tablePanel = new GlassPanel();
         tablePanel.setLayout(new BorderLayout(0, 10));
 
-        // Table header panel with title and search
         JPanel tableHeaderPanel = new JPanel(new BorderLayout());
         tableHeaderPanel.setOpaque(false);
 
@@ -254,7 +234,6 @@ public class MainFrame extends JFrame
         tableTitleLabel.setFont(new Font("Arial", Font.BOLD, 18));
         tableHeaderPanel.add(tableTitleLabel, BorderLayout.WEST);
 
-        // Search field
         JPanel searchPanel = new JPanel(new BorderLayout(5, 0));
         searchPanel.setOpaque(false);
         searchField = new JTextField(15);
@@ -267,14 +246,13 @@ public class MainFrame extends JFrame
 
         tablePanel.add(tableHeaderPanel, BorderLayout.NORTH);
 
-        // Table
         String[] columnNames = {"ID", "Name", "Phone", "Age", "Gender", "Address", "Actions"};
         DefaultTableModel model = new DefaultTableModel(columnNames, 0)
         {
             @Override
             public boolean isCellEditable(int row, int column)
             {
-                return column == 6; // Only actions column is editable
+                return column == 6;
             }
         };
 
@@ -283,11 +261,9 @@ public class MainFrame extends JFrame
         memberTable.setFillsViewportHeight(true);
         memberTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        // Add action buttons to the table
         memberTable.getColumn("Actions").setCellRenderer(new ButtonRenderer());
         memberTable.getColumn("Actions").setCellEditor(new ButtonEditor());
 
-        // Customize column widths
         memberTable.getColumnModel().getColumn(0).setPreferredWidth(30);  // ID
         memberTable.getColumnModel().getColumn(1).setPreferredWidth(150); // Name
         memberTable.getColumnModel().getColumn(2).setPreferredWidth(100); // Phone
@@ -298,7 +274,6 @@ public class MainFrame extends JFrame
         JScrollPane scrollPane = new JScrollPane(memberTable);
         tablePanel.add(scrollPane, BorderLayout.CENTER);
 
-        // Status panel
         JPanel statusPanel = new JPanel(new BorderLayout());
         statusPanel.setOpaque(false);
         statusLabel = new JLabel("Showing 0 members");
@@ -311,7 +286,6 @@ public class MainFrame extends JFrame
         return tablePanel;
     }
 
-    // Create a method to style text fields
     private JTextField createStyledTextField(String placeholder)
     {
         JTextField textField = new JTextField()
@@ -321,7 +295,6 @@ public class MainFrame extends JFrame
             {
                 super.paintComponent(g);
 
-                // Add placeholder text if empty
                 if (getText().isEmpty() && !hasFocus())
                 {
                     Graphics2D g2 = (Graphics2D) g.create();
@@ -333,7 +306,6 @@ public class MainFrame extends JFrame
             }
         };
 
-        // Rounded border
         textField.setBorder(BorderFactory.createCompoundBorder(
             new RoundedBorder(10, new Color(200, 200, 200)),
             BorderFactory.createEmptyBorder(5, 10, 5, 10))
@@ -509,7 +481,6 @@ public class MainFrame extends JFrame
         statusLabel.setText("Showing " + count + " members");
     }
 
-    // Getters for UI components
     public JTextField getNameField()
     {
         return nameField;
