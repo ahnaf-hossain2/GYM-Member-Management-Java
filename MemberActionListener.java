@@ -205,7 +205,6 @@ public class MemberActionListener
         mainFrame.getGenderComboBox().setSelectedItem(member.getGender());
         mainFrame.getAddressField().setText(member.getAddress());
 
-        // Show update and delete buttons
         mainFrame.getAddButton().setEnabled(false);
         mainFrame.getUpdateButton().setEnabled(true);
         mainFrame.getDeleteButton().setEnabled(true);
@@ -220,7 +219,6 @@ public class MemberActionListener
         mainFrame.getGenderComboBox().setSelectedIndex(0);
         mainFrame.getAddressField().setText("");
 
-        // Reset buttons
         mainFrame.getAddButton().setEnabled(true);
         mainFrame.getUpdateButton().setEnabled(false);
         mainFrame.getDeleteButton().setEnabled(false);
@@ -229,7 +227,7 @@ public class MemberActionListener
     private void updateTable(List<Member> members)
     {
         DefaultTableModel model = (DefaultTableModel) mainFrame.getMemberTable().getModel();
-        model.setRowCount(0); // Clear table
+        model.setRowCount(0);
 
         for (Member member : members) {
             model.addRow(new Object[]{
